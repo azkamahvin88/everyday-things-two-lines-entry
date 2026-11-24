@@ -18,6 +18,27 @@ export const ENTRY_LINES: string[] = [
   "It works because both are too many things squeezing through a space that is too small, but it leaves out that marbles never get impatient and honk \u2014 only the drivers do.",
 ];
 
-export const ENTRY_TEXT: string = ENTRY_LINES.join("\n");
+export function formatEntry(lines: string[]): string {
+  return lines.join("\n");
+}
 
-console.log(ENTRY_TEXT);
+export const ENTRY_TEXT: string = formatEntry(ENTRY_LINES);
+
+// The entry must be exactly two lines: one analogy, one honest limit.
+// Refuse to print anything else — a wrong line count means the entry
+// no longer matches the competition format.
+export function printEntry(lines: string[]): void {
+  if (lines.length !== 2) {
+    throw new Error(
+      `Entry must have exactly 2 lines, got ${lines.length}`,
+    );
+  }
+  for (const line of lines) {
+    if (line.trim().length === 0) {
+      throw new Error("Entry lines must not be empty");
+    }
+  }
+  console.log(formatEntry(lines));
+}
+
+printEntry(ENTRY_LINES);
